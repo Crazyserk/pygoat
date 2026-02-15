@@ -1,0 +1,6 @@
+version: v1.25.0
+ignore:
+  SNYK-PYTHON-SQLPARSE-1584201:
+    - '*':
+        reason: 'Vulnerabilidad de denegación de servicio sin impacto real en entorno controlado. La librería sqlparse es una dependencia base de PyGoat y actualizarla no aporta valor a los objetivos de aprendizaje.'
+        expires: '2026-12-31'
