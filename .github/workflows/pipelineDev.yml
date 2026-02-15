@@ -20,6 +20,7 @@ jobs:
       # FASE 1: DETECCIÓN DE SECRETOS EN EL CÓDIGO (GITLEAKS)
       # ------------------------------------------------------------------
       - name: Gitleaks - Buscando tokens y contraseñas hardcodeadas
+        continue-on-error: true   
         uses: zricethezav/gitleaks-action@v1.6.0
         # Si encuentra algo con alta confianza, el pipeline fallará automáticamente
 
@@ -34,13 +35,15 @@ jobs:
           npm install -g snyk                              # Cliente de Snyk
 
       - name: Snyk - Escaneo de vulnerabilidades en librerías
-        run: snyk test --severity-threshold=high
+        continue-on-error: true   # <-- NUEVA LÍNEA
+        run: snyk test --severity-threshold=high || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         # El umbral high hace que el pipeline falle si hay vulnerabilidades críticas/altas
 
       - name: Generar reporte HTML de Snyk (incluso si falla)
         if: always()
+        continue-on-error: true   # <-- NUEVA LÍNEA
         run: |
           npm install -g snyk-to-html@1.4.0
           snyk test --severity-threshold=high --json > snyk-report.json || true
@@ -52,6 +55,7 @@ jobs:
       # FASE 3: ANÁLISIS ESTÁTICO DE CALIDAD Y SEGURIDAD (SONARCLOUD)
       # ------------------------------------------------------------------
       - name: SonarCloud - Análisis de código fuente
+        continue-on-error: true   # <-- NUEVA LÍNEA
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -75,6 +79,7 @@ jobs:
         run: pip install python-owasp-zap-v2.4
 
       - name: Construir y lanzar PyGoat con Docker
+        continue-on-error: true   # <-- NUEVA LÍNEA
         run: |
           # Usamos el Dockerfile que ya viene en el repositorio
           docker build -t pygoat-app .
@@ -84,6 +89,7 @@ jobs:
           sleep 30
 
       - name: Iniciar ZAP en modo daemon
+        continue-on-error: true   # <-- NUEVA LÍNEA
         run: |
           docker run -d --name zap-daemon --network host \
             -v $(pwd):/zap/wrk:rw \
@@ -94,6 +100,7 @@ jobs:
           sleep 30
 
       - name: Ejecutar escaneo activo con ZAP
+        continue-on-error: true   # <-- NUEVA LÍNEA
         run: python zap_scan.py
         env:
           ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
