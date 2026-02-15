@@ -1,4 +1,4 @@
-name: DevSecOps Pipeline
+name:  Pipeline de Seguridad
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
         continue-on-error: true
 
       # ============================================
-      # SNYK
+      # Escaneo con Snyk (dependencias y vulns)
       # ============================================
       - name: Install system dependencies and Snyk
         run: |
@@ -50,7 +50,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       # ============================================
-      # SONARCLOUD
+      # Análisis con SonarCloud (calidad de código)
       # ============================================
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@master
@@ -66,7 +66,7 @@ jobs:
         continue-on-error: true
 
       # ============================================
-      # ZAP
+      # Escaneo con ZAP (seguridad de la app en runtime)
       # ============================================
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -97,9 +97,9 @@ jobs:
           ZAP_API_KEY: ${{ secrets.ZAP_API_KEY }}
         continue-on-error: true
 
-      # ============================================
-      # VERIFICACIÓN DE REPORTES
-      # ============================================
+      # =======================================================================
+      # Verificamos que se hayan generado los reportes de manera correcta
+      # ======================================================================
       - name: Check generated reports
         if: always()
         run: |
@@ -109,7 +109,7 @@ jobs:
           echo "============================="
 
       # ============================================
-      # ARTIFACTS
+      #  Impresión de reportes como artifacts
       # ============================================
       - name: Upload Snyk Report
         uses: actions/upload-artifact@v4
@@ -128,7 +128,7 @@ jobs:
           if-no-files-found: warn
 
       # ============================================
-      # FASE 4: BUILD DOCKER
+      # Construcción de la imagen Docker final
       # ============================================
       - name: Build Docker image
         if: success()
@@ -138,14 +138,14 @@ jobs:
           docker images | grep pygoat
 
       # ============================================
-      # FASE 4: NOTIFICACIÓN FINAL
+      # Mensaje de cierre del pipeline mediante echo
       # ============================================
       - name: Notificación
         if: always()
         run: |
           echo "========================================"
-          echo "🚀 PyGoat v1.x: Superadas pruebas de seguridad"
-          echo "📦 Imagen Docker: pygoat:final"
-          echo "📊 Reportes disponibles en artifacts"
-          echo "✅ Listo para despliegue en Producción"
-          echo "========================================"
+          echo "PyGoat versión 1.x - Pipeline completado"
+          echo "Imagen Docker generada: pygoat:final"
+          echo "Reportes disponibles en la sección de artifacts"
+          echo "Listo para desplegar en producción si todo es correcto"
+          echo "========================================="
