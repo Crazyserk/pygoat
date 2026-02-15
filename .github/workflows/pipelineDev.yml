@@ -79,8 +79,8 @@ jobs:
       - name: Run PyGoat
         run: |
           docker run -d --name pygoat --network host pygoat/pygoat:latest
-          echo "⏳ Esperando 30 segundos..."
-          sleep 30
+          echo "⏳ Esperando 45 segundos..."
+          sleep 45
 
       - name: Run ZAP
         run: |
