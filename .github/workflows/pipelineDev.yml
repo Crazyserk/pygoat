@@ -128,7 +128,7 @@ jobs:
           if-no-files-found: warn
 
       # ============================================
-      # FASE 4: BUILD DOCKER (solo si éxito)
+      # FASE 4: BUILD DOCKER
       # ============================================
       - name: Build Docker image
         if: success()
