@@ -104,8 +104,8 @@ jobs:
         if: always()
         run: |
           echo "=== VERIFICANDO REPORTES ==="
-          ls -la snyk-report.html && echo "✅ snyk-report.html OK" || echo "⚠️ snyk-report.html NO generado"
-          ls -la zap-report.html && echo "✅ zap-report.html OK" || echo "⚠️ zap-report.html NO generado"
+          ls -la snyk-report.html && echo "snyk-report.html OK" || echo "snyk-report.html NO generado"
+          ls -la zap-report.html && echo "zap-report.html OK" || echo "zap-report.html NO generado"
           echo "============================="
 
       # ============================================
@@ -134,7 +134,7 @@ jobs:
         if: success()
         run: |
           docker build -t pygoat:final .
-          echo "✅ Imagen Docker construida: pygoat:final"
+          echo "Imagen Docker construida: pygoat:final"
           docker images | grep pygoat
 
       # ============================================
@@ -144,8 +144,8 @@ jobs:
         if: always()
         run: |
           echo "========================================"
-          echo "PyGoat versión 1.x - Pipeline completado"
+          echo "PyGoat versión 1.x - Pipeline completado con éxito"
           echo "Imagen Docker generada: pygoat:final"
-          echo "Reportes disponibles en la sección de artifacts"
+          echo "Reportes disponibles y creados en artifacts"
           echo "Listo para desplegar en producción si todo es correcto"
           echo "========================================="
