@@ -127,9 +127,9 @@ jobs:
           path: zap-report.html
           if-no-files-found: warn
 
-      # ============================================
+      # =============================================
       # Construcción de la imagen Docker final
-      # ============================================
+      # =============================================
       - name: Build Docker image
         if: success()
         run: |
